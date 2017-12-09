@@ -2,7 +2,14 @@
 
 This is where I will put my solutions for Advent of Code 2017 (using ReasonML & BuckleScript).
 
+# Run tests
+
+```
+npm test
+```
+
 # Build
+
 ```
 npm run build
 ```

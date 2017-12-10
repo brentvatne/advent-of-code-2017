@@ -2,25 +2,44 @@
 'use strict';
 
 var List                         = require("bs-platform/lib/js/list.js");
-var Caml_obj                     = require("bs-platform/lib/js/caml_obj.js");
 var Caml_format                  = require("bs-platform/lib/js/caml_format.js");
+var Caml_builtin_exceptions      = require("bs-platform/lib/js/caml_builtin_exceptions.js");
 var StringUtils$AdventOfCode2017 = require("./StringUtils.js");
 
+function compareInt(x, y) {
+  var n = x - y | 0;
+  if (n > 0) {
+    return 1;
+  } else if (n < 0) {
+    return -1;
+  } else if (n !== 0) {
+    throw [
+          Caml_builtin_exceptions.assert_failure,
+          [
+            "day2.re",
+            12,
+            9
+          ]
+        ];
+  } else {
+    return 0;
+  }
+}
+
 function solution(grid) {
-  var sortAscending = function (row) {
-    return List.sort(Caml_obj.caml_compare, row);
-  };
   var lastMinusFirst = function (row) {
     return List.hd(List.rev(row)) - List.hd(row) | 0;
   };
   var list = List.map((function (row) {
           var row$1 = StringUtils$AdventOfCode2017.split(" ", row);
-          return lastMinusFirst(sortAscending(List.map(Caml_format.caml_int_of_string, row$1)));
+          var row$2 = List.map(Caml_format.caml_int_of_string, row$1);
+          return lastMinusFirst(List.sort(compareInt, row$2));
         }), StringUtils$AdventOfCode2017.split("\n", grid));
   return List.fold_left((function (prim, prim$1) {
                 return prim + prim$1 | 0;
               }), 0, list);
 }
 
-exports.solution = solution;
+exports.compareInt = compareInt;
+exports.solution   = solution;
 /* No side effect */

@@ -7,13 +7,16 @@ var Caml_format                  = require("bs-platform/lib/js/caml_format.js");
 var StringUtils$AdventOfCode2017 = require("./StringUtils.js");
 
 function solution(grid) {
-  var splitAndMakeInt = function (str) {
-    return List.sort(Caml_obj.caml_compare, List.map(Caml_format.caml_int_of_string, StringUtils$AdventOfCode2017.split(" ", str)));
+  var sortAscending = function (row) {
+    return List.sort(Caml_obj.caml_compare, row);
   };
   var lastMinusFirst = function (row) {
-    return List.nth(row, List.length(row) - 1 | 0) - List.hd(row) | 0;
+    return List.hd(List.rev(row)) - List.hd(row) | 0;
   };
-  var list = List.map(lastMinusFirst, List.map(splitAndMakeInt, StringUtils$AdventOfCode2017.split("\n", grid)));
+  var list = List.map((function (row) {
+          var row$1 = StringUtils$AdventOfCode2017.split(" ", row);
+          return lastMinusFirst(sortAscending(List.map(Caml_format.caml_int_of_string, row$1)));
+        }), StringUtils$AdventOfCode2017.split("\n", grid));
   return List.fold_left((function (acc, x) {
                 return acc + x | 0;
               }), 0, list);

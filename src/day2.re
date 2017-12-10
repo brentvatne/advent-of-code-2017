@@ -1,9 +1,13 @@
 open StringUtils;
 
 let solution = (grid) => {
-  let splitAndMakeInt = (str) =>
-    str |> split(" ") |> List.map(int_of_string) |> List.sort(compare);
-  let lastMinusFirst = (row) => List.nth(row, List.length(row) - 1) - List.hd(row);
+  let splitOnSpaces = (str) => split(" ", str);
+  let stringToInt = (row) => List.map(int_of_string, row);
+  let sortAscending = (row) => List.sort(compare, row);
+  let lastMinusFirst = (row) => List.hd(List.rev(row)) - List.hd(row);
   let sum = (list) => List.fold_left((acc, x) => acc + x, 0, list);
-  grid |> split("\n") |> List.map(splitAndMakeInt) |> List.map(lastMinusFirst) |> sum
+  grid
+  |> split("\n")
+  |> List.map(row => row |> splitOnSpaces |> stringToInt |> sortAscending |> lastMinusFirst)
+  |> sum
 };

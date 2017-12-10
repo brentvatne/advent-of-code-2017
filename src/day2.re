@@ -14,12 +14,12 @@ let compareInt = (x, y) =>
 
 let solution = (grid) => {
   let splitOnSpaces = (str) => split(" ", str);
-  let stringToInt = (row) => List.map(int_of_string, row);
+  let mapStringToInt = (row) => List.map(int_of_string, row);
   let sortAscending = (row) => List.sort(compareInt, row);
   let lastMinusFirst = (row) => List.hd(List.rev(row)) - List.hd(row);
   let sum = (list) => List.fold_left((+), 0, list);
   grid
   |> split("\n")
-  |> List.map((row) => row |> splitOnSpaces |> stringToInt |> sortAscending |> lastMinusFirst)
+  |> List.map((row) => row |> splitOnSpaces |> mapStringToInt |> sortAscending |> lastMinusFirst)
   |> sum
 };

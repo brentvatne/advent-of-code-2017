@@ -8,27 +8,31 @@ var Caml_format                  = require("bs-platform/lib/js/caml_format.js");
 var Caml_builtin_exceptions      = require("bs-platform/lib/js/caml_builtin_exceptions.js");
 var StringUtils$AdventOfCode2017 = require("./StringUtils.js");
 
+function boolOfOptional(a) {
+  if (a) {
+    return /* true */1;
+  } else {
+    return /* false */0;
+  }
+}
+
+function unwrap(a) {
+  if (a) {
+    return a[0];
+  } else {
+    throw [
+          Caml_builtin_exceptions.assert_failure,
+          [
+            "day1.re",
+            12,
+            12
+          ]
+        ];
+  }
+}
+
 function filterWithIndexAndListAndLength(f, l) {
-  return List.map((function (a) {
-                if (a) {
-                  return a[0];
-                } else {
-                  throw [
-                        Caml_builtin_exceptions.assert_failure,
-                        [
-                          "day1.re",
-                          16,
-                          19
-                        ]
-                      ];
-                }
-              }), List.filter((function (a) {
-                      if (a) {
-                        return /* true */1;
-                      } else {
-                        return /* false */0;
-                      }
-                    }))(List.mapi((function (i, a) {
+  return List.map(unwrap, List.filter(boolOfOptional)(List.mapi((function (i, a) {
                         var match = Curry._4(f, i, a, l, List.length(l));
                         if (match !== 0) {
                           return /* Some */[a];
@@ -39,8 +43,8 @@ function filterWithIndexAndListAndLength(f, l) {
 }
 
 function solution(input) {
-  return Pervasives.string_of_int(List.fold_left((function (acc, n) {
-                    return acc + n | 0;
+  return Pervasives.string_of_int(List.fold_left((function (prim, prim$1) {
+                    return prim + prim$1 | 0;
                   }), 0, filterWithIndexAndListAndLength((function (i, n, ns, length) {
                         var match = +(i < (length - 1 | 0));
                         if (match !== 0) {
@@ -51,6 +55,8 @@ function solution(input) {
                       }), List.map(Caml_format.caml_int_of_string, StringUtils$AdventOfCode2017.split("", input)))));
 }
 
+exports.boolOfOptional                  = boolOfOptional;
+exports.unwrap                          = unwrap;
 exports.filterWithIndexAndListAndLength = filterWithIndexAndListAndLength;
 exports.solution                        = solution;
 /* No side effect */

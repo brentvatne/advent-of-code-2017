@@ -17,8 +17,8 @@ function solution(grid) {
           var row$1 = StringUtils$AdventOfCode2017.split(" ", row);
           return lastMinusFirst(sortAscending(List.map(Caml_format.caml_int_of_string, row$1)));
         }), StringUtils$AdventOfCode2017.split("\n", grid));
-  return List.fold_left((function (acc, x) {
-                return acc + x | 0;
+  return List.fold_left((function (prim, prim$1) {
+                return prim + prim$1 | 0;
               }), 0, list);
 }
 
